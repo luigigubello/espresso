@@ -42,7 +42,7 @@ def seleniumbase_browser(url, hostname, result):
         except OSError:
             pass
         sb.save_screenshot('screenshots/' + hostname + '_' + current_dt + '.png')
-        result["screenshot"] = hostname + '_' + current_dt + '.png'
+        result["screenshot"] = 'http://127.0.0.1:8080/' + hostname + '_' + current_dt + '.png'
 
 
 def site_exist_check(url):
