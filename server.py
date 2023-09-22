@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from fastapi import FastAPI, HTTPException, File, UploadFile, responses, Body
+from fastapi import FastAPI, HTTPException, responses, Body
 import os
 import uvicorn
 from seleniumbase import SB
@@ -33,6 +33,9 @@ def seleniumbase_browser(url, hostname, result):
             sb.switch_to_frame('iframe[title*="challenge"]')
             sb.click("span.mark")
         sb.sleep(6)
+        if result["cloudflare"]:
+            captcha_bypassed = sb.get_page_source()
+            result["cloudflare_bypass"] = cloudflare_bypass_check(captcha_bypassed)
         current_dt = str(datetime.datetime.now()).replace(' ', '_')
         try:
             os.makedirs('./screenshots')
@@ -40,9 +43,6 @@ def seleniumbase_browser(url, hostname, result):
             pass
         sb.save_screenshot('screenshots/' + hostname + '_' + current_dt + '.png')
         result["screenshot"] = hostname + '_' + current_dt + '.png'
-        if result["cloudflare"]:
-            captcha_bypassed = sb.get_page_source()
-            result["cloudflare_bypass"] = cloudflare_bypass_check(captcha_bypassed)
 
 
 def site_exist_check(url):
