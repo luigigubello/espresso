@@ -49,8 +49,6 @@ If the detection system passes the captcha and the anti-bot scripts, it cannot e
 <div class="row text-title TPADVE8EnC" id="lgheader" role="heading"><div aria-level="1" id="ttbx">S<span class="bOvTTsGrux">4DMyBAm5k8</span>i<span class="bOvTTsGrux">GmMXAj8fGM</span>g<span class="bOvTTsGrux">Mp7UJeF7kR</span>n<span class="bOvTTsGrux">37IHiL58YA</span> i<span class="bOvTTsGrux">GmSTqd8Eom</span>n</div></div>
 ```
 
-I am considering experimenting with [EasyOCR](https://github.com/JaidedAI/EasyOCR) on screenshots.
-
 ## How To Use
 
 Build the Docker image.
@@ -74,7 +72,7 @@ curl -X POST http://127.0.0.1:8080/scanUrl -d 'https://example.org'
 The server should return the following JSON:
 
 ```
-{"url": "https://example.org", "url_redirect": "https://example.org/", "hostname": "example.org", "creation_date": "1995-08-31 04:00:00", "registrar": "ICANN", "cloudflare": false, "cloudflare_bypass": false, "screenshot": "http://127.0.0.1:8080/example.org_2023-09-23_00:04:46.711083.png"}
+{"url":"https://example.org","url_redirect":"https://example.org/","hostname":"example.org","creation_date":"1995-08-31 04:00:00","registrar":"ICANN","cloudflare":false,"cloudflare_bypass":false,"screenshot":"http://127.0.0.1:8080/example.org_2023-09-23_11:42:51.059291.png","ocr":[["Example Domain",0.9949757033947026],["You may use",0.9785027673399405],["permission:",0.9745552511311801]]}
 ```
 
 - **url:** it is the submitted URL.
@@ -85,3 +83,23 @@ The server should return the following JSON:
 - **cloudflare:** `true` if there is a Cloudflare challenge.
 - **cloudflare_bypass:** `true` if the client has been able to pass the Cloudflare challenge.
 - **screenshot:** URL of the screenshot of the page.
+- **ocr:** it returns an array of tuples, containing the extracted strings with high confidence (>0.95)
+
+## FAQs
+
+**Q:** I cannot run the Docker container on Apple Mx.
+
+**A:** Yes. This image can run on `amd64` platform, and not on `arm64`, because otherwise Chrome crashes. But you can still run the server on Apple ARM without containerization, just add these two lines at the bottom of `server.py`:
+
+```
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8080)
+```
+
+**Q:** The first build is slow.
+
+**A:** Yes, installing [EasyOCR](https://github.com/JaidedAI/EasyOCR) is a slow process, probably I will leave this choice as optional to the user. In addition, I recommend at least 32GB of virtual disk for EasyOCR and its models, and a GPU to optimize EasyOCR.
+
+**Q:** Espresso cannot bypass Cloudflare captcha.
+
+**A:** Yes, this can happen, it's a mouse-n-cat game. Cloudflare captcha uses heuristic metrics to detect non-human actions or automation. They probably evaluate the client configuration (window resoluzion, plugins, etc), the IP (hosting vs. ISP, number of requests, etc), and other unknown metrics. So, if you iterate requests from the same IP, probably Cloudflare will block you.
