@@ -8,6 +8,7 @@ import requests
 import urllib3
 import whois
 import datetime
+import easyocr
 
 
 def cloudflare_captcha_check(source_code):
@@ -43,6 +44,19 @@ def seleniumbase_browser(url, hostname, result):
             pass
         sb.save_screenshot('screenshots/' + hostname + '_' + current_dt + '.png')
         result["screenshot"] = 'http://127.0.0.1:8080/' + hostname + '_' + current_dt + '.png'
+
+
+def ocr_url(image):
+    try:
+        image_reader = easyocr.Reader(['en'], model_storage_directory='/app/models', download_enabled=False)
+        ocr_text = image_reader.readtext(image)
+        high_confidence_text = []
+        for item in ocr_text:
+            if item[-1] > 0.95:
+                high_confidence_text.append([item[-2], item[-1]])
+        return high_confidence_text[:15]
+    except Exception:
+        return []
 
 
 def site_exist_check(url):
@@ -89,6 +103,7 @@ async def scan_url(submitted_url: str = Body()):
             response_data["creation_date"] = whois_creation_date(response_data["hostname"])
             response_data["registrar"] = whois_registrar(response_data["hostname"])
             seleniumbase_browser(submitted_url, response_data["hostname"], response_data)
+            response_data["ocr"] = ocr_url('screenshots/' + response_data["screenshot"].removeprefix('http://127.0.0.1:8080/'))
 
         return response_data
     except Exception as e:
