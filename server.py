@@ -9,6 +9,7 @@ import urllib3
 import whois
 import datetime
 import easyocr
+import platform
 
 
 def cloudflare_captcha_check(source_code):
@@ -48,11 +49,11 @@ def seleniumbase_browser(url, hostname, result):
 
 def ocr_url(image):
     try:
-        image_reader = easyocr.Reader(['en'], model_storage_directory='/app/models', download_enabled=False)
+        image_reader = easyocr.Reader(['en'], model_storage_directory='models', download_enabled=False)
         ocr_text = image_reader.readtext(image)
         high_confidence_text = []
         for item in ocr_text:
-            if item[-1] > 0.95:
+            if item[-1] > 0.85:
                 high_confidence_text.append([item[-2], item[-1]])
         return high_confidence_text[:15]
     except Exception:
@@ -119,3 +120,7 @@ async def get_image(image_name: str):
 
     # Return a 404 Not Found response if the image file does not exist
     return {"error": "Image not found"}, 404
+
+
+if platform.system() == "Darwin" and platform.processor() == "arm":
+    uvicorn.run(app, host="127.0.0.1", port=8080)

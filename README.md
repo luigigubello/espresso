@@ -89,12 +89,7 @@ The server should return the following JSON:
 
 **Q:** I cannot run the Docker container on Apple Mx.
 
-**A:** Yes. This image can run on `amd64` platform, and not on `arm64`, because otherwise Chrome crashes. But you can still run the server on Apple ARM without containerization, just add these two lines at the bottom of `server.py`:
-
-```
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8080)
-```
+**A:** Yes. This image can run on `amd64` platform, and not on `arm64`, because otherwise Chrome crashes. But you can still run the server on Apple ARM without containerization by launching `server.py`.
 
 **Q:** The first build is slow.
 
