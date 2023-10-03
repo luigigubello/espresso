@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir models
 wget -q https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/english_g2.zip -O /tmp/english_g2.zip

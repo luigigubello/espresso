@@ -9,6 +9,7 @@ import urllib3
 import whois
 import datetime
 import easyocr
+import platform
 
 
 def cloudflare_captcha_check(source_code):
@@ -121,5 +122,5 @@ async def get_image(image_name: str):
     return {"error": "Image not found"}, 404
 
 
-if __name__ == "__main__":
+if platform.release() == "Darwin" and platform.processor() == "arm":
     uvicorn.run(app, host="127.0.0.1", port=8080)
