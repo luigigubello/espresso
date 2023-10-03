@@ -122,5 +122,5 @@ async def get_image(image_name: str):
     return {"error": "Image not found"}, 404
 
 
-if platform.release() == "Darwin" and platform.processor() == "arm":
+if platform.system() == "Darwin" and platform.processor() == "arm":
     uvicorn.run(app, host="127.0.0.1", port=8080)
