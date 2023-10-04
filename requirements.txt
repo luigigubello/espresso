@@ -8,5 +8,5 @@ python_whois==0.8.0
 Requests==2.31.0
 seleniumbase==4.18.8
 sewar==0.4.6
-urllib3==1.26.17
+urllib3==2.0.6
 uvicorn==0.23.2
