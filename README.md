@@ -66,13 +66,22 @@ docker run -p 8080:8080 -it espresso
 And submit the suspicious URL sending a POST request.
 
 ```
-curl -X POST http://127.0.0.1:8080/scanUrl -d 'https://example.org'
+url -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -d '{"url": "https://example.org", "ocr": true, "similarity": true}'
+```
+
+The JSON payload structure is the following:
+
+```
+url: str
+cf_bypass: Optional[bool] = False
+ocr: Optional[bool] = False
+similarity: Optional[bool] = False
 ```
 
 The server should return the following JSON:
 
 ```
-{"url":"https://example.org","url_redirect":"https://example.org/","hostname":"example.org","creation_date":"1995-08-31 04:00:00","registrar":"ICANN","cloudflare":false,"cloudflare_bypass":false,"screenshot":"http://127.0.0.1:8080/example.org_2023-09-23_11:42:51.059291.png","ocr":[["Example Domain",0.9949757033947026],["You may use",0.9785027673399405],["permission:",0.9745552511311801]]}
+{"url":"https://example.org","url_redirect":"https://example.org/","hostname":"example.org","creation_date":"1995-08-31 04:00:00","registrar":"ICANN","cloudflare":false,"cloudflare_bypass":false,"screenshot":"http://127.0.0.1:8080/screenshot_example.org_2023-10-04_18:47:23.816416.png","ocr":[["Example Domain",0.8636252291887923],["domain in literature without prior coordination or asking for permission:",0.9289502852506653]],"similarity":""}% 
 ```
 
 - **url:** it is the submitted URL.
@@ -83,7 +92,8 @@ The server should return the following JSON:
 - **cloudflare:** `true` if there is a Cloudflare challenge.
 - **cloudflare_bypass:** `true` if the client has been able to pass the Cloudflare challenge.
 - **screenshot:** URL of the screenshot of the page.
-- **ocr:** it returns an array of tuples, containing the extracted strings with high confidence (>0.95)
+- **ocr:** it returns an array of tuples, containing the extracted strings with high confidence (>0.85)
+- **similarity:** URL of the most similar sample, if it exists.
 
 ## FAQs
 
