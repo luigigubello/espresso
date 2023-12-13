@@ -119,8 +119,6 @@ def image_similarity(img_path):
 app = FastAPI()
 
 # Endpoint to scan a URL and return a JSON response
-# curl -X POST http://127.0.0.1:8080/scanUrl -d 'https://example.org'
-
 class SubmittedUrl(BaseModel):
     url: str
     cf_bypass: Optional[bool] = False

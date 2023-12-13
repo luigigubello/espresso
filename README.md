@@ -49,7 +49,37 @@ If the detection system passes the captcha and the anti-bot scripts, it cannot e
 <div class="row text-title TPADVE8EnC" id="lgheader" role="heading"><div aria-level="1" id="ttbx">S<span class="bOvTTsGrux">4DMyBAm5k8</span>i<span class="bOvTTsGrux">GmMXAj8fGM</span>g<span class="bOvTTsGrux">Mp7UJeF7kR</span>n<span class="bOvTTsGrux">37IHiL58YA</span> i<span class="bOvTTsGrux">GmSTqd8Eom</span>n</div></div>
 ```
 
-## How To Use
+## Nero In B
+
+### How To Use
+
+Build the Docker image.
+
+```
+docker build -t nero-in-b .
+```
+
+Launch the server.
+
+```
+docker run -p 8080:8080 -it nero-in-b
+```
+
+And submit the suspicious URL sending a POST request.
+
+```
+curl -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -d '{"url": "https://example.org"}'
+```
+
+The server should return the following JSON:
+
+```
+{"url":"https://example.org","url_redirect":"https://example.org/","screenshot":"http://127.0.0.1:8080/screenshot_example.org.png","similarity":""}
+```
+
+## Espresso
+
+### How To Use
 
 Build the Docker image.
 
@@ -66,7 +96,7 @@ docker run -p 8080:8080 -it espresso
 And submit the suspicious URL sending a POST request.
 
 ```
-url -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -d '{"url": "https://example.org", "ocr": true, "similarity": true}'
+curl -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -d '{"url": "https://example.org", "ocr": true, "similarity": true}'
 ```
 
 The JSON payload structure is the following:
@@ -95,16 +125,16 @@ The server should return the following JSON:
 - **ocr:** it returns an array of tuples, containing the extracted strings with high confidence (>0.85)
 - **similarity:** URL of the most similar sample, if it exists.
 
-## FAQs
+### FAQs
 
 **Q:** I cannot run the Docker container on Apple Mx.
 
 **A:** Yes. This image can run on `amd64` platform, and not on `arm64`, because otherwise Chrome crashes. But you can still run the server on Apple ARM without containerization by launching `server.py`.
 
-**Q:** The first build is slow.
+**Q:** The first `Espresso` Docker build is slow.
 
 **A:** Yes, installing [EasyOCR](https://github.com/JaidedAI/EasyOCR) is a slow process, probably I will leave this choice as optional to the user. In addition, I recommend at least 32GB of virtual disk for EasyOCR and its models, and a GPU to optimize EasyOCR.
 
-**Q:** Espresso cannot bypass Cloudflare captcha.
+**Q:** `Espresso` cannot bypass Cloudflare captcha.
 
 **A:** Yes, this can happen, it's a mouse-n-cat game. Cloudflare captcha uses heuristic metrics to detect non-human actions or automation. They probably evaluate the client configuration (window resoluzion, plugins, etc), the IP (hosting vs. ISP, number of requests, etc), and other unknown metrics. So, if you iterate requests from the same IP, probably Cloudflare will block you.
