@@ -51,6 +51,8 @@ If the detection system passes the captcha and the anti-bot scripts, it cannot e
 
 ## Nero In B
 
+Proof-of-Concept to measure the distance between two screenshots using OpenCV. More reliable than `sewar`'s algorithms.
+
 ### How To Use
 
 Build the Docker image.
@@ -78,6 +80,8 @@ The server should return the following JSON:
 ```
 
 ## Espresso
+
+Proof-of-Concept to detect phishing websites by bypassing modern anti-detection techniques. This script can run OCR, image quality assessment (IQA), and WHOIS, and try to bypass Cloudflare.
 
 ### How To Use
 
