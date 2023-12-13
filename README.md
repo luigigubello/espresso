@@ -1,6 +1,6 @@
 # Espresso 🤌
 
-**Espresso** is a service designed to identify potential phishing websites deployed via PhaaS (phishing-as-a-service) platforms. Espresso should be able to bypass Cloudflare captcha and detection evasions, providing the creation date of the domain, the domain registrar, and a screenshot.
+**Espresso** is a proof-of-concept service designed to identify potential phishing websites deployed via PhaaS (phishing-as-a-service) platforms. Espresso should be able to bypass Cloudflare captcha and detection evasions, providing the creation date of the domain, the domain registrar, and a screenshot.
 
 ## Detection evasion techniques
 
