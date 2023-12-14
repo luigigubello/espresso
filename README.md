@@ -51,7 +51,7 @@ If the detection system passes the captcha and the anti-bot scripts, it cannot e
 
 ## Nero In B
 
-Proof-of-Concept to measure the distance between two screenshots using OpenCV. More reliable than `sewar`'s algorithms.
+Proof-of-Concept to measure the distance between two screenshots using OpenCV. More reliable than `sewar`'s algorithms. Browser emulation using Playwright.
 
 ### How To Use
 
@@ -79,9 +79,39 @@ The server should return the following JSON:
 {"url":"https://example.org","url_redirect":"https://example.org/","screenshot":"http://127.0.0.1:8080/screenshot_example.org.png","similarity":""}
 ```
 
+## Capo In B
+
+Proof-of-Concept to measure the distance between two screenshots using OpenCV.js. Browser emulation using Puppeteer.
+
+### How To Use
+
+Build the Docker image.
+
+```
+docker build -t capo-in-b .
+```
+
+Launch the server.
+
+```
+docker run -p 8080:8080 -it capo-in-b
+```
+
+And submit the suspicious URL sending a POST request.
+
+```
+curl -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -d '{"url": "https://example.org"}'
+```
+
+The server should return the following JSON:
+
+```
+{"url":"https://example.org","url_redirect":"https://example.org/","screenshot":"http://127.0.0.1:8080/screenshot_example.org.png","similarity":""}
+```
+
 ## Espresso
 
-Proof-of-Concept to detect phishing websites by bypassing modern anti-detection techniques. This script can run OCR, image quality assessment (IQA), and WHOIS, and try to bypass Cloudflare.
+Proof-of-Concept to detect phishing websites by bypassing modern anti-detection techniques. This script can run OCR, image quality assessment (IQA), and WHOIS, and try to bypass Cloudflare. Browser emulation using Seleniumbase.
 
 ### How To Use
 
