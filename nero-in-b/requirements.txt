@@ -1,0 +1,8 @@
+fastapi==0.105.0
+numpy==1.24.2
+opencv_python==4.8.1.78
+opencv_python_headless==4.8.0.76
+playwright==1.40.0
+pydantic==2.5.2
+urllib3==1.26.18
+uvicorn==0.24.0.post1
