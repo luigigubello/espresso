@@ -11,7 +11,16 @@ const app = express();
 const port = 8080;
 
 app.use(bodyParser.json());
-app.use('/screenshots', express.static(path.join(__dirname, 'screenshots')));
+
+// Define the path for the screenshots folder in /tmp
+const screenshotsFolder = '/tmp/screenshots';
+
+// Check if the screenshots folder exists, if not, create it
+fs.mkdir(screenshotsFolder, { recursive: true })
+    .then(() => console.log('Screenshots folder created in /tmp'))
+    .catch(err => console.error('Error creating screenshots folder:', err));
+
+app.use('/screenshots', express.static(screenshotsFolder));
 
 async function isValidURL(url) {
   return validator.isURL(url);
@@ -158,7 +167,7 @@ async function captureScreenshot(url) {
             // Directory already exists
         }
         const parsedURL = new URL(url);
-        const screenshotPath = `screenshots/screenshot_${parsedURL.hostname}.png`;
+        const screenshotPath = `/tmp/screenshots/screenshot_${parsedURL.hostname}.png`;
         await page.screenshot({ path: screenshotPath });
 
         // Return both screenshot and page.url
@@ -193,7 +202,7 @@ app.post('/scanUrl', async (req, res) => {
         response_data.screenshot = `http://127.0.0.1:${port}/${path.basename(screenshotPath)}`;
 
         const similarityCheck = await imageSimilarity(screenshotPath);
-        response_data.similarity = similarityCheck[0]
+        response_data.similarity = similarityCheck[0] ? similarityCheck[0] : '';
         response_data.score = similarityCheck[1]
 
         res.json(response_data);
@@ -204,7 +213,6 @@ app.post('/scanUrl', async (req, res) => {
 
 app.get('/:image_name', async (req, res) => {
     const { image_name } = req.params;
-    const screenshotsFolder = path.join(__dirname, 'screenshots');
     const similarityFolder = path.join(__dirname, 'similarity');
     const imagePath = path.join(screenshotsFolder, image_name);
 
