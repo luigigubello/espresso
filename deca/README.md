@@ -1,6 +1,6 @@
 # Deca
 
-**sample here**
+Proof-of-Concept to detect phishing websites under certain specific conditions and threat models. In particular, this script checks if the web server returns some header communely returned by [DRAFT]
 
 ## How To Use
 
@@ -25,5 +25,5 @@ curl -X POST http://127.0.0.1:8080/scanUrl -H "Content-Type: application/json" -
 The server should return the following JSON:
 
 ```
-[sample]
+{"url":"https://example.org","url_redirect":"https://example.org/","cloudflare_headers":{"cf-mitigated":"","server":"ECS (nyd/D10A)","report-to":false,"nel":false,"cf-ray":false},"certificate_dates":{"creation_date":"2024-01-30T00:00:00","expiration_date":"2025-03-01T23:59:59","current_date":"2024-03-22T17:26:10.951501","difference_in_days":52}}
 ```
