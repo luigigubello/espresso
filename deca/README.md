@@ -1,6 +1,6 @@
 # Deca
 
-Proof-of-Concept to detect phishing websites under certain specific conditions and threat models. In particular, this script checks if the web server returns some header communely returned by [DRAFT]
+Proof-of-Concept to detect phishing websites under certain specific conditions and threat models. In particular, this script checks if the web server returns some header commonly returned by phishing sites and the TLS certificate date. 
 
 ## How To Use
 
