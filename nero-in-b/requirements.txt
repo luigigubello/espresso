@@ -4,5 +4,5 @@ opencv_python==4.8.1.78
 opencv_python_headless==4.8.0.76
 playwright==1.40.0
 pydantic==2.6.3
-urllib3==1.26.18
+urllib3==1.26.19
 uvicorn==0.27.1
